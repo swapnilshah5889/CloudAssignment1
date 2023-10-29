@@ -11,18 +11,21 @@ import java.util.Map;
 public class FileWriteService {
     public void fileWrite(Map<String, String> mp) {
         try {
+
+            // Open writer
             FileWriter writer = new FileWriter("ImageText.txt");
 
-            Iterator<Map.Entry<String, String>> it = mp.entrySet().iterator();
-            while (it.hasNext()) {
-                Map.Entry<String, String> pair = it.next();
+            // Loop over all data and write to file
+            Iterator<Map.Entry<String, String>> iterator = mp.entrySet().iterator();
+            while (iterator.hasNext()) {
+                Map.Entry<String, String> pair = iterator.next();
                 writer.write(pair.getKey() + ":" + pair.getValue() + "\n");
-                it.remove();
+                iterator.remove();
             }
             writer.close();
-            log.info("Write operation complete, new file created ImageText.txt");
+            log.info("Write to new file completed! New file created ImageText.txt");
         } catch (IOException e) {
-            log.info("Error occurred while writing file");
+            log.info("Error occurred while writing to the file");
             e.printStackTrace();
         }
     }

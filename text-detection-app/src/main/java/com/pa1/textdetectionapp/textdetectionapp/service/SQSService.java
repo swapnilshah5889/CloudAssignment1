@@ -15,8 +15,6 @@ import java.util.Map;
 public class SQSService {
     private SqsClient sqsClient;
 
-    private static String queueName = "cars.fifo";
-
     public SQSService() {
         this.sqsClient = SqsClient.builder()
                 .region(Region.US_EAST_1)
@@ -27,7 +25,7 @@ public class SQSService {
         return sqsClient;
     }
 
-    public String getQueueUrl(SqsClient sqsClient) {
+    public String getSQSQueueUrl(SqsClient sqsClient) {
         String queueName = "cars.fifo";
         String queueUrl;
 
@@ -53,9 +51,11 @@ public class SQSService {
         return queueUrl;
     }
 
-    public Message receiveMessage(SqsClient sqsClient, String queueUrl) throws InterruptedException {
+    public Message pollQueueMessage(SqsClient sqsClient, String queueUrl) throws InterruptedException {
         Message message = null;
         try {
+
+            // Receive message request
             ReceiveMessageRequest receiveMessageRequest = ReceiveMessageRequest.builder()
                     .queueUrl(queueUrl)
                     .maxNumberOfMessages(1)
@@ -64,7 +64,7 @@ public class SQSService {
             try {
                 message = sqsClient.receiveMessage(receiveMessageRequest).messages().get(0);
             } catch (IndexOutOfBoundsException e) {
-                log.info("Queue is empty, waiting for the message.");
+                log.info("Empty Queue! Waiting for message");
             }
             return message;
         } catch (Exception e) {

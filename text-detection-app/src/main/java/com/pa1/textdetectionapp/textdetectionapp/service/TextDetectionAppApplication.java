@@ -27,40 +27,50 @@ public class TextDetectionAppApplication {
 	public static void main(String[] args) throws InterruptedException {
 		SpringApplication.run(TextDetectionAppApplication.class, args);
 
-		boolean queueEnd = false;
+		// Init S3
 		S3Service s3Service = new S3Service();
-
 		SQSService sqsService = new SQSService();
 		SqsClient sqsClient = sqsService.getSqsClient();
-		String queueUrl = sqsService.getQueueUrl(sqsClient);
+		String queueUrl = sqsService.getSQSQueueUrl(sqsClient);
 
-
+		// Init Text detection service
 		TextDetectionService textDetectionService = new TextDetectionService();
 		RekognitionClient rekognitionClient = textDetectionService.getRekognitionClient();
 
-
 		log.info("queueUrl: {}", queueUrl);
 		Map<String, String> mp = new HashMap<>();
+
+		// Infinite loop
 		while(true) {
-			Message message = sqsService.receiveMessage(sqsClient, queueUrl);
+			// Fetch new messages from the queue
+			Message message = sqsService.pollQueueMessage(sqsClient, queueUrl);
+
+			// Sleep thread if no new message available
 			if(message==null) {
 				Thread.sleep(1000);
 				continue;
 			}
 
+			// Delete Message Request
 			DeleteMessageRequest deleteMessageRequest = DeleteMessageRequest.builder()
 					.queueUrl(queueUrl)
 					.receiptHandle(message.receiptHandle())
 					.build();
 			sqsClient.deleteMessage(deleteMessageRequest);
+
+			// Exit loop if message is -1
 			if(message.body().equals("-1")) {
 				break;
-			}  else {
+			}
+			// Process the image
+			else {
 				Image image = s3Service.s3FetchByName(message.body());
+				// Detect text from the image
 				textDetectionService.detectTextFromImage(rekognitionClient, image, message.body(), mp);
 			}
 		}
 
+		// Write result to file
 		FileWriteService fileWriteService = new FileWriteService();
 		fileWriteService.fileWrite(mp);
 	}
