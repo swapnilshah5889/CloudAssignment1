@@ -1,8 +1,6 @@
 package com.pa1.carrecognitionapp.service;
 
-import ch.qos.logback.classic.Logger;
 import lombok.extern.slf4j.Slf4j;
-import org.slf4j.LoggerFactory;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import software.amazon.awssdk.services.rekognition.RekognitionClient;
@@ -14,12 +12,12 @@ import java.util.List;
 
 @SpringBootApplication
 @Slf4j
-public class CarRecognitionAppApplication {
+public class CarRecognitionApp {
 
 	private static String bucketName = "njit-cs-643";
 
 	public static void main(String[] args) throws InterruptedException {
-		SpringApplication.run(CarRecognitionAppApplication.class, args);
+		SpringApplication.run(CarRecognitionApp.class, args);
 
 		// Init S3
 		S3Service s3Service = new S3Service();
