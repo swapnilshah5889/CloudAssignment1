@@ -25,16 +25,20 @@ public class RekognitionService {
         return rekognitionClient;
     }
 
-    public boolean recognize(RekognitionClient rekognitionClient, S3Object s3Object, String bucketName) {
+    public boolean recognizeImage(RekognitionClient rekognitionClient, S3Object s3Object, String bucketName) {
         try {
+
             Image img = Image.builder().s3Object(software.amazon.awssdk.services.rekognition.model.S3Object
                             .builder().bucket(bucketName).name(s3Object.key()).build())
                     .build();
             DetectLabelsRequest request = DetectLabelsRequest.builder().image(img).minConfidence((float) 90)
                     .build();
+
+            // Detect labels
             DetectLabelsResponse result = rekognitionClient.detectLabels(request);
             List<Label> labels = result.labels();
 
+            // Check if car label is detected
             for (Label label : labels) {
                 if (label.name().equals("Car")) {
                     return true;

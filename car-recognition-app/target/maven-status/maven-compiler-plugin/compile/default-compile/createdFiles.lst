@@ -1,0 +1,4 @@
+com/pa1/carrecognitionapp/service/SQSService.class
+com/pa1/carrecognitionapp/service/S3Service.class
+com/pa1/carrecognitionapp/service/CarRecognitionAppApplication.class
+com/pa1/carrecognitionapp/service/RekognitionService.class

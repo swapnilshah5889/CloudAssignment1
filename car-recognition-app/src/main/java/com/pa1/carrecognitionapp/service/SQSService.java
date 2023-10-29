@@ -15,8 +15,6 @@ import java.util.Map;
 public class SQSService {
     private final SqsClient sqsClient;
 
-    private static final String queueName = "cars.fifo";
-
     public SQSService() {
 
         this.sqsClient = SqsClient.builder()
@@ -24,37 +22,7 @@ public class SQSService {
                 .build();
     }
 
-    public SqsClient getSqsClient() {
-        return sqsClient;
-    }
-
-    public String getQueueUrl(SqsClient sqsClient) {
-        String queueName = "cars.fifo";
-        String queueUrl;
-
-        GetQueueUrlRequest getQueueUrlRequest = GetQueueUrlRequest.builder()
-                .queueName(queueName)
-                .build();
-
-        try {
-            queueUrl = sqsClient.getQueueUrl(getQueueUrlRequest).queueUrl();
-        } catch (QueueDoesNotExistException e) {
-            CreateQueueRequest request = CreateQueueRequest.builder()
-                    .attributesWithStrings(Map.of("FifoQueue", "true", "ContentBasedDeduplication", "true"))
-                    .queueName(queueName)
-                    .build();
-            sqsClient.createQueue(request);
-
-            GetQueueUrlRequest getURLQue = GetQueueUrlRequest.builder()
-                    .queueName(queueName)
-                    .build();
-            queueUrl = sqsClient.getQueueUrl(getURLQue).queueUrl();
-        }
-
-        return queueUrl;
-    }
-
-    public boolean pushMessage(SqsClient sqsClient, String imgKey, String queueUrl) {
+    public boolean pushSQSMessage(SqsClient sqsClient, String imgKey, String queueUrl) {
         try {
             SendMessageRequest sendMsgRequest = SendMessageRequest.builder()
                     .queueUrl(queueUrl)
@@ -69,4 +37,36 @@ public class SQSService {
             return false;
         }
     }
+
+    public SqsClient getSqsClient() {
+        return sqsClient;
+    }
+
+    public String getQueueUrl(SqsClient client) {
+        String queueName = "cars.fifo";
+        String queueUrl;
+
+        GetQueueUrlRequest getQueueUrlRequest = GetQueueUrlRequest.builder()
+                .queueName(queueName)
+                .build();
+
+        try {
+            queueUrl = client.getQueueUrl(getQueueUrlRequest).queueUrl();
+        } catch (QueueDoesNotExistException e) {
+            CreateQueueRequest request = CreateQueueRequest.builder()
+                    .attributesWithStrings(Map.of("FifoQueue", "true", "ContentBasedDeduplication", "true"))
+                    .queueName(queueName)
+                    .build();
+            client.createQueue(request);
+
+            GetQueueUrlRequest getURLQue = GetQueueUrlRequest.builder()
+                    .queueName(queueName)
+                    .build();
+            queueUrl = client.getQueueUrl(getURLQue).queueUrl();
+        }
+
+        return queueUrl;
+    }
+
+
 }

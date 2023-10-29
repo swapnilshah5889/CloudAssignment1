@@ -33,14 +33,14 @@ public class S3Service {
         return s3Client;
     }
 
-    public List<S3Object> s3DataFetch(S3Client s3Client){
+    public List<S3Object> fetchS3Objects(S3Client s3Client){
         try {
-            ListObjectsRequest listObjects = ListObjectsRequest
+            ListObjectsRequest request = ListObjectsRequest
                     .builder()
                     .bucket(bucketName)
                     .build();
 
-            return s3Client.listObjects(listObjects).contents();
+            return s3Client.listObjects(request).contents();
 
         } catch (S3Exception e) {
             System.err.println(e.awsErrorDetails().errorMessage());
