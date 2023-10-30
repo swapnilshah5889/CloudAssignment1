@@ -101,5 +101,4 @@ export CLASSPATH=.:$JAVA_HOME/lib/dt.jar:$JAVA_HOME/lib/tools.jar
 * Move the .jar file in EC2 instance using cyberduck.
 * Run the command ```java -jar car-recognition-app-0.0.1-SNAPSHOT.jar``` for car recognition app, and run the ```java -jar text-detection-app-0.0.1-SNAPSHOT.jar```
  command to run text detection app. Both app can run in parallel.
-![AppsRunningParallel]()
 
