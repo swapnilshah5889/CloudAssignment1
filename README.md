@@ -7,9 +7,6 @@ Image classification and text detection application using AWS platform
 * AWS SQS Messaging Service 
 * AWS Rekognition
 
-## Architectural Diagram
-![ArchDiagram](https://github.com/phet2309/ProgrammingAssignment1/blob/main/Images/fig1.jpeg)
-
 ## Steps Performed
 - [x] AWS Learner's Lab Setup
 - [x] AWS Cli configuration
@@ -57,15 +54,15 @@ Image classification and text detection application using AWS platform
 <br />
 * Download the ssh key (labsuser.pem)
 * Change the labsuser.pem file's permission to read-only. <br />
-```chmod 400 labsuser.pem```
+```chmod 400 CloudAssignment1.pem```
 * Navigate to the labsuser.pem file's location and run the below command. <br />
-```ssh -i labsuser.pem ec2-user@54.145.80.160``` here IPaddress is IPv4 address of EC2 instance.
+```ssh -i CloudAssignment1.pem ec2-user@ec2-52-87-222-2.compute-1.amazonaws.com``` here IPaddress is IPv4 address of EC2 instance.
 * Type yes and the EC2 will be accessible from command line.
 
 ### AWS SQS configuration
 * Navigate to ```Amazon SQS``` page.
 * Select ```Create Queue```.
-* Select queue type and provide the queue name. In our case, ```Car.fifo```
+* Select queue type and provide the queue name. In our case, ```cars.fifo```
 * Put in the configuration details for SQS.
 * Select encryption and access policy. It can be assigned to the LabRole also.
 
@@ -98,7 +95,7 @@ export PATH=$JAVA_HOME/bin:$PATH
 export CLASSPATH=.:$JAVA_HOME/lib/dt.jar:$JAVA_HOME/lib/tools.jar
 ```
 * Check the Java version and verify.
-* Move the .jar file in EC2 instance using cyberduck.
+* Move the .jar file in EC2 instance using cyberduck or scp command.
 * Run the command ```java -jar car-recognition-app-0.0.1-SNAPSHOT.jar``` for car recognition app, and run the ```java -jar text-detection-app-0.0.1-SNAPSHOT.jar```
  command to run text detection app. Both app can run in parallel.
 
