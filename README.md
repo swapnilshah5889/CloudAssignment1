@@ -50,11 +50,11 @@ Image classification and text detection application using AWS platform
  EC2 instance access through SSH, HTTP or HTTPS.
 * Select 8 Gib with general purpose SSD as a storage configuration.
 * Select launch instance.
-<br /> ![AccessManagementEC2]()
+<br /> 
 
 ### SSH access to the EC2 instances
 * As per requirement, the two instances are created.
-<br /> ![RunningInstances]()
+<br />
 * Download the ssh key (labsuser.pem)
 * Change the labsuser.pem file's permission to read-only. <br />
 ```chmod 400 labsuser.pem```
@@ -63,7 +63,6 @@ Image classification and text detection application using AWS platform
 * Type yes and the EC2 will be accessible from command line.
 
 ### AWS SQS configuration
-![SQS]() <br />
 * Navigate to ```Amazon SQS``` page.
 * Select ```Create Queue```.
 * Select queue type and provide the queue name. In our case, ```Car.fifo```
@@ -87,7 +86,6 @@ Image classification and text detection application using AWS platform
 
 
 ### Java application deployment on EC2 instances
-![messageCount]()
 * SSH to the EC2 instances using respective IP addresses.
 * Provide AWS configuration using ```aws configure``` command.
 * Install openjdk-java-19.0.1 using the command ```wget https://download.oracle.com/java/19/archive/jdk-19.0.1_linux-x64_bin.tar.gz```
